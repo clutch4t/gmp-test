@@ -1,7 +1,6 @@
 import Head from "next/head";
 import React from "react";
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
+import Layout from "@/components/Layout";
 
 export async function getStaticProps() {
   const res = await fetch("https://gmp.einzelwerk.io/api/en/resource/index");
@@ -9,22 +8,25 @@ export async function getStaticProps() {
 
   const menuRes = await fetch("https://gmp.einzelwerk.io/api/en/config");
   const menuData = await menuRes.json();
+
+  const languageRes = await fetch("https://gmp.einzelwerk.io/api/languages");
+  const languageData = await languageRes.json();
   return {
     props: {
       data,
       menuData,
+      languageData
     },
   };
 }
 
-const index = ({ data, menuData }) => {
+const index = ({ data, menuData, languageData }) => {
   return (
     <>
       <Head>
         <title>{data.pagetitle}</title>
       </Head>
-      <Hero data={data} />
-      <Header menuData={menuData} />
+      <Layout menuData={menuData} data={data} languageData={languageData} />
     </>
   );
 };
